@@ -118,11 +118,15 @@ one text block, shortened here):
 ```
 
 A null field means unknown, never zero. `401` means the token is missing,
-mistyped, revoked or expired.
+mistyped, revoked or expired; its body links to [Get a token](#1-get-a-token)
+in `error.help_url`. A failed tool call returns `isError: true` with
+`{"error": {"code", "message"}}`; bad or missing arguments always use the code
+`invalid_arguments`. `429` (with `Retry-After`) means too many requests per
+token or per client IP.
 
 ## Tools
 
-Every token gets all 19 tools. Data reads are capped at 2 GB per token per
+Every token gets all 21 tools. Data reads are capped at 2 GB per token per
 day; analysis tasks have no quota during the test phase.
 
 <!-- tools:begin -->
@@ -141,6 +145,8 @@ day; analysis tasks have no quota during the test phase.
 | `get_structures` | Structure availability and links for protein ids |
 | `similarity_search` | MMseqs2 search of 1-50 protein sequences against PhageScope proteins |
 | `get_similarity_result` | Status and paged hits of a `similarity_search` by its `search_id` |
+| `list_local_tools` | Docker tools and ready-made workflows for analysis on your own machine |
+| `plan_local_analysis` | `docker pull`, database setup and `docker run` commands for a workflow or chosen steps, sized to your machine |
 | `submit_analysis` | Hand an analysis request to PhageAgent; returns a task id |
 | `get_analysis_status` | Status and recent progress of a task |
 | `get_analysis_result` | Summary, deliverables and provenance of a finished task |
